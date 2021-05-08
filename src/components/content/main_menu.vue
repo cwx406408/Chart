@@ -2,7 +2,7 @@
   <div>
     <el-container :style="styleData" ref="mainContainer">
       <el-aside width="250px" style="background-color: rgb(238, 241, 246);">
-          <el-menu :default-openeds="['1']" :default-active="'1-1'" @select="onSelect">
+          <el-menu :default-openeds="['1']" :default-active="'1-1'">
             <el-submenu index="1">
               <template slot="title"><i class="el-icon-data-analysis"></i>图表</template>
               <el-menu-item index="1-1"><i class="el-icon-s-data"></i>柱状图</el-menu-item>
@@ -24,7 +24,7 @@
         </el-header>
         
         <el-main id="mainContent">
-          <div id="mainChart" @resize="resize"></div>
+          <pie id="mainChart" :interval="2000" url="/api/data/pie" :widthpx="width" :heightpx="height"></pie>
         </el-main>
       </el-container>
     </el-container>
@@ -49,107 +49,34 @@
 </style>
 
 <script>
-  import {request} from '../../network/request'
+  import pie from '../common/pie'
   export default {
     name: 'mainMenu',
+    components: {
+      pie
+    },
     data() {
       return {
         clientHeight: Number,
         styleData: {},
-        myChart: null,
-        chartOption: {}
+        chartOption: {},
+        timer: null,
+        width: 0,
+        height: 0
       }
     },
     mounted() {
       this.styleData = 'height:' + (document.documentElement.clientHeight-10) + 'px; ' + 'border: 1px solid #eee';
-      
-      window.onresize = function temp() {
+      window.onresize = () => {
         this.styleData = 'height:' + (document.documentElement.clientHeight-10) + 'px; ' + 'border: 1px solid #eee';
-        const mainChart = document.getElementById("mainChart")
-
-        mainChart.style.width = (document.getElementById("mainContent").clientWidth - 40) + 'px';
-        mainChart.style.height = (document.getElementById("mainContent").clientHeight - 40) + 'px';
-        let ev = new Event('resize');
-        mainChart.dispatchEvent(ev);
-      }
-
-    },
-    methods: {
-      drawChart(option) {
-        // 使用刚指定的配置项和数据显示图表。
-        this.myChart && this.myChart.setOption(option);
-      },
-
-      initChart() {
-      // 基于准备好的dom，初始化echarts实例
-        this.myChart = this.$echarts.init(document.getElementById("mainChart"));
-      },
-
-      onSelect(index) {
-        if(index === '1-1'){
-          request({
-          url: '/api/data/bar'
-          }).then(res => {
-            this.myChart && this.myChart.setOption(res.data, true);
-          }).catch(err => {
-            console.log(err);
-          });
         
-        }else if(index === '1-2'){
-          request({
-          url: '/api/data/pie'
-          }).then(res => {
-            this.myChart && this.myChart.setOption(res.data, true);
-          }).catch(err => {
-            console.log(err);
-          });
-
-        }else if(index === '1-3'){
-          request({
-          url: '/api/data/line'
-          }).then(res => {
-            this.myChart && this.myChart.setOption(res.data, true);
-          }).catch(err => {
-            console.log(err);
-          });
-        }else{
-          request({
-          url: '/api/data/bar'
-          }).then(res => {
-            this.myChart && this.myChart.setOption(res.data, true);
-          }).catch(err => {
-            console.log(err);
-          });
-        }
-      },
-
-      resize() {
-        this.myChart.resize({
-          animation: {
-            duration: 1000,
-            easing: 'linear'
-          }
-        });
+        this.width = document.getElementById("mainContent").clientWidth - 40;
+        this.height = document.getElementById("mainContent").clientHeight - 40;
       }
     },
-
     updated() {
-      const mainChart = document.getElementById("mainChart")
-      mainChart.style.width = (document.getElementById("mainContent").clientWidth - 40) + 'px';
-      mainChart.style.height = (document.getElementById("mainContent").clientHeight - 40) + 'px';
-
-      if(!this.myChart){
-        this.initChart();
-        request({
-        url: '/api/data/bar'
-        }).then(res => {
-          this.myChart && this.myChart.setOption(res.data, true);
-        }).catch(err => {
-          console.log(err);
-        });
-      }else {
-        this.myChart.resize();
-      }
+      this.width = document.getElementById("mainContent").clientWidth - 40;
+      this.height = document.getElementById("mainContent").clientHeight - 40;
     },
   }
 </script>
