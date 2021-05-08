@@ -17,7 +17,7 @@
 <script>
 import {request} from '../../network/request'
 export default {
-  name: "pie",
+  name: "chart",
   data() {
     return {
       chart: null,
@@ -84,12 +84,28 @@ export default {
       }
     }
   },
-  updated() {
-    // this.styleData = {
-    //   height: this.heightpx + 'px',
-    //   width: this.widthpx + 'px'
-    // }
+  mounted() {
+    !this.mainDom && (this.mainDom = document.getElementById("chart"));
 
+    this.styleData = {
+      height: this.heightpx + 'px',
+      width: this.widthpx + 'px'
+    }
+    
+    if(!this.chart){
+      this.mainDom && this.initChart(this.mainDom)
+      request({
+      url: this.url
+      }).then(res => {
+        this.chart && this.drawChart(res.data);
+      }).catch(err => {
+        console.log(err);
+      });
+    }else {
+      this.chart.resize();
+    }
+  },
+  updated() {
     !this.mainDom && (this.mainDom = document.getElementById("chart"));
 
     if(!this.chart){
@@ -104,8 +120,10 @@ export default {
     }else {
       this.chart.resize();
     }
-
-    //console.log('subupdated')
   },
+  beforeDestroy() {
+    this.timer && clearInterval(this.timer);
+    this.chart && this.$echarts.dispose(this.chart);
+  }
 }
 </script>

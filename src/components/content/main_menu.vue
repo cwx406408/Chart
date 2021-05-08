@@ -2,12 +2,12 @@
   <div>
     <el-container :style="styleData" ref="mainContainer">
       <el-aside width="250px" style="background-color: rgb(238, 241, 246);">
-          <el-menu :default-openeds="['1']" :default-active="'1-1'">
+          <el-menu :default-openeds="['1']" :default-active="'1-1'" @select="onSelect">
             <el-submenu index="1">
               <template slot="title"><i class="el-icon-data-analysis"></i>图表</template>
               <el-menu-item index="1-1"><i class="el-icon-s-data"></i>柱状图</el-menu-item>
-              <el-menu-item index="1-2"><i class="el-icon-pie-chart"></i>饼状图</el-menu-item>
-              <el-menu-item index="1-3"><i class="el-icon-s-marketing"></i>折线图</el-menu-item>
+              <el-menu-item index="1-2"><i class="el-icon-pie-chart"></i>折线图</el-menu-item>
+              <el-menu-item index="1-3"><i class="el-icon-s-marketing"></i>饼状图</el-menu-item>
             </el-submenu>
             <el-menu-item index="2"><i class="el-icon-setting"></i>设置</el-menu-item>
           </el-menu>
@@ -24,8 +24,16 @@
         </el-header>
         
         <el-main id="mainContent">
-          <pie id="mainChart" :interval="2000" url="/api/data/pie" :widthpx="width" :heightpx="height"></pie>
+          <barchart id="bar" v-if="chartType === 'bar'" :widthpx="width" :heightpx="height">
+          </barchart>
+          <linechart id="line" v-else-if="chartType === 'line'" :widthpx="width" :heightpx="height">
+          </linechart>
+          <piechart id="pie" v-else-if="chartType === 'pie'" :widthpx="width" :heightpx="height">
+          </piechart>
+          <div id="setting" v-else-if="chartType === ''">这是设置页面</div>
+          <!-- <chart v-else :interval="2000" url="/api/data/bar" :widthpx="width" :heightpx="height"></chart> -->
         </el-main>
+
       </el-container>
     </el-container>
   </div>
@@ -49,11 +57,15 @@
 </style>
 
 <script>
-  import pie from '../common/pie'
+  import barchart from './bar'
+  import linechart from './line'
+  import piechart from './pie'
   export default {
     name: 'mainMenu',
     components: {
-      pie
+      barchart,
+      linechart,
+      piechart
     },
     data() {
       return {
@@ -62,7 +74,8 @@
         chartOption: {},
         timer: null,
         width: 0,
-        height: 0
+        height: 0,
+        chartType: 'bar'
       }
     },
     mounted() {
@@ -77,6 +90,16 @@
     updated() {
       this.width = document.getElementById("mainContent").clientWidth - 40;
       this.height = document.getElementById("mainContent").clientHeight - 40;
+    },
+    methods: {
+      onSelect(index) {
+        switch(index){
+          case '1-1': this.chartType = 'bar';break;
+          case '1-2': this.chartType = 'line';break;
+          case '1-3': this.chartType = 'pie';break;
+          default: this.chartType = '';break;
+        }
+      }
     },
   }
 </script>

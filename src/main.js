@@ -4,13 +4,14 @@ import router from './router/index';
 import element from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import * as echarts from "echarts";
-
+import {BarChart, PieChart, LineChart} from '../node_modules/echarts/charts'
 require('./assets/css/base.css')
 require('./mock/mock')
 
-Vue.use(element)
+echarts.use([BarChart,PieChart,LineChart]);
+Vue.use(element);
 Vue.prototype.$echarts = echarts;
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 new Vue({
   router,

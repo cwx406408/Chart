@@ -18,7 +18,7 @@ Mock.mock('/api/data/bar', options => {
         ]
       },
       title: {
-        text: "ECharts 入门示例",
+        text: "ECharts Demo",
         left: 'center'
       },
       xAxis: {
@@ -54,7 +54,7 @@ Mock.mock('/api/data/line', option => {
         ]
       },
       title: {
-        text: "ECharts 入门示例",
+        text: "ECharts Demo",
         left: 'center'
       },
       xAxis: {
@@ -89,7 +89,7 @@ Mock.mock('/api/data/pie', optioin => {
         ]
       },
       title: {
-        text: "ECharts 入门示例",
+        text: "ECharts Demo",
         left: 'center'
       },
       xAxis: null,
