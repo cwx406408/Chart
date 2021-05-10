@@ -24,13 +24,14 @@
         </el-header>
         
         <el-main id="mainContent">
-          <barchart id="bar" v-if="chartType === 'bar'" :widthpx="width" :heightpx="height">
+          <barchart id="bar" v-if="chartType === 'bar'" :widthpx="width" :heightpx="height" url="/api/data/chart">
           </barchart>
-          <linechart id="line" v-else-if="chartType === 'line'" :widthpx="width" :heightpx="height">
+          <linechart id="line" v-else-if="chartType === 'line'" :widthpx="width" :heightpx="height" url="/api/data/chart">
           </linechart>
-          <piechart id="pie" v-else-if="chartType === 'pie'" :widthpx="width" :heightpx="height">
+          <piechart id="pie" v-else-if="chartType === 'pie'" :widthpx="width" :heightpx="height" url="/api/data/chart">
           </piechart>
           <div id="setting" v-else-if="chartType === ''">这是设置页面</div>
+         
           <!-- <chart v-else :interval="2000" url="/api/data/bar" :widthpx="width" :heightpx="height"></chart> -->
         </el-main>
 
@@ -63,9 +64,9 @@
   export default {
     name: 'mainMenu',
     components: {
+      piechart,
       barchart,
-      linechart,
-      piechart
+      linechart
     },
     data() {
       return {
