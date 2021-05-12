@@ -23,6 +23,17 @@ export default {
     }
   },
 
+  computed: {
+    mode() {
+      if(this.$store.state.dark === 0){
+        return 'light';
+      }
+
+      return 'dark';
+    }
+
+  },
+
   props: {
     widthpx: {
       type: Number,
@@ -42,7 +53,7 @@ export default {
 
     initChart(dom) {
     // 基于准备好的dom，初始化echarts实例
-      this.chart = this.$echarts.init(dom);
+      this.chart = this.$echarts.init(dom, this.mode);
     }
   },
 
@@ -67,6 +78,13 @@ export default {
     },
     options: {
       handler: function() {
+        this.chart && this.drawChart(this.options);
+      }
+    },
+    mode: {
+      handler: function() {
+        this.chart && this.$echarts.dispose(this.chart);
+        this.mainDom && this.initChart(this.mainDom);
         this.chart && this.drawChart(this.options);
       }
     }

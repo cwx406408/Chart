@@ -15,11 +15,16 @@
         </el-aside>
       <el-container>
         <el-header style="text-align: right; font-size: 12px">
-          <el-dropdown>
-            <i class="el-icon-setting" style="margin-right: 15px"></i>主题
+          <el-switch style="margin-right: 20px"
+            v-model="value"
+            active-text="自动刷新"
+            inactive-text="停止刷新">
+          </el-switch>
+          <el-dropdown @command="switchMode">
+            <i class="el-icon-s-opportunity" style="margin-right: 5px"></i>主题
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>浅色模式</el-dropdown-item>
-              <el-dropdown-item>深色色模式</el-dropdown-item>
+              <el-dropdown-item command="light">浅色模式</el-dropdown-item>
+              <el-dropdown-item command="dark">深色模式</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </el-header>
@@ -81,7 +86,8 @@
         timer: null,
         width: 0,
         height: 0,
-        chartType: 'bar'
+        chartType: 'bar',
+        value: true
       }
     },
     mounted() {
@@ -106,6 +112,13 @@
           case '1-4': this.chartType = 'scatter';break;
           default: this.chartType = '';break;
         }
+      },
+      switchMode(command){
+        if((command === 'dark' && this.$store.state.dark === 0)
+        || (command === 'light' && this.$store.state.dark === 1)){
+          this.$store.commit('switchMode')
+        }
+        
       }
     },
   }
