@@ -58,6 +58,11 @@ export default {
         //组装数据
         this.options = {
           series: [{
+            label: {
+            show: true,
+            // 标签的文字。
+              formatter: '{c}'
+            },
             name: "销量",
             type: "bar",
             data: tempData,

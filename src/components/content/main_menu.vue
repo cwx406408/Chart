@@ -8,6 +8,7 @@
               <el-menu-item index="1-1"><i class="el-icon-s-data"></i>柱状图</el-menu-item>
               <el-menu-item index="1-2"><i class="el-icon-pie-chart"></i>折线图</el-menu-item>
               <el-menu-item index="1-3"><i class="el-icon-s-marketing"></i>饼状图</el-menu-item>
+              <el-menu-item index="1-4"><i class="el-icon-s-grid"></i>散点图</el-menu-item>
             </el-submenu>
             <el-menu-item index="2"><i class="el-icon-setting"></i>设置</el-menu-item>
           </el-menu>
@@ -30,6 +31,8 @@
           </linechart>
           <piechart id="pie" v-else-if="chartType === 'pie'" :widthpx="width" :heightpx="height" url="/api/data/chart">
           </piechart>
+          <scatter id="pie" v-else-if="chartType === 'scatter'" :widthpx="width" :heightpx="height" url="/api/dataset/chart">
+          </scatter>
           <div id="setting" v-else-if="chartType === ''">这是设置页面</div>
          
           <!-- <chart v-else :interval="2000" url="/api/data/bar" :widthpx="width" :heightpx="height"></chart> -->
@@ -61,12 +64,14 @@
   import barchart from './bar'
   import linechart from './line'
   import piechart from './pie'
+  import scatter from './scatter'
   export default {
     name: 'mainMenu',
     components: {
       piechart,
       barchart,
-      linechart
+      linechart,
+      scatter
     },
     data() {
       return {
@@ -98,6 +103,7 @@
           case '1-1': this.chartType = 'bar';break;
           case '1-2': this.chartType = 'line';break;
           case '1-3': this.chartType = 'pie';break;
+          case '1-4': this.chartType = 'scatter';break;
           default: this.chartType = '';break;
         }
       }

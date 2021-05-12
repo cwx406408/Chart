@@ -61,6 +61,12 @@ export default {
             name: "销量",
             type: "line",
             data: tempData,
+            smooth: true,
+            label: {
+              show: true,
+            // 标签的文字。
+              formatter: '{c}'
+            }
           }],
           title: {
             text: "ECharts Demo",

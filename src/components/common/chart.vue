@@ -72,7 +72,6 @@ export default {
     }
   },
   mounted() {
-    console.log('chart mounted');
     this.mainDom = document.getElementById("chart");
 
     if(!this.chart){
@@ -86,7 +85,12 @@ export default {
   },
 
   updated() {
-    this.chart && this.chart.resize();
+    this.chart && this.chart.resize({
+      animation: {
+        duration: 500,
+        easing: 'linear'
+      }
+    });
   },
   beforeDestroy() {
     this.chart && this.$echarts.dispose(this.chart);

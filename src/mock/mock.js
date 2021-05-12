@@ -14,3 +14,18 @@ Mock.mock('/api/data/chart', option => {
     ]
   }
 });
+
+//使用mockjs模拟数据
+Mock.mock('/api/dataset/chart', option => {
+  let arr = ['Year', 'Amount']
+  for(let i=0; i<100; i++){
+    arr.push([Random.float(0, 0), Random.natural(100, 1000)])
+  }
+  return {
+    ret: 0,
+    dataset: {
+      dimensions: ['Year', 'Amount'],
+      source: arr
+    },
+  }
+});

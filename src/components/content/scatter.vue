@@ -14,7 +14,7 @@
 import chart from '../common/chart';
 import {request} from '../../network/request'
 export default {
-  name: 'pieChart',
+  name: 'scatterChart',
   components: {
     chart
   },
@@ -41,7 +41,7 @@ export default {
   },
 
   methods: {
-    createPieData(url) {
+    createData(url) {
       //请求数据
       request({
         url: url
@@ -49,30 +49,30 @@ export default {
         
         //组装数据
         this.options = {
+          dataset: {
+            dimensions: ['Year', 'Amount'],
+            source: res.dataset.source
+          },
           series: [{
-            name: "销量",
-            type: "pie",
-            data: res.data,
-            radius: '70%',
-            label: {
-              show: true,
-            // 标签的文字。
-              formatter: '{b}{a}:{c}({d}%)'
-            }
+            //name: "demo",
+            type: "scatter",
+            symbolSize: function(params){
+                return (params[0] * 10) + (params[1] * 0.01);
+              },
+            encode: {
+                x: 'Year',
+                y: 'Amount',
+                tooltip: [0, 1]
+            },         
           }],
           title: {
             text: "ECharts Demo",
             left: 'center'
           },
-          xAxis: null,
-          yAxis: null,
-          legend: {
-            orient: 'vertical',
-            left: "left"
-          },
-          tooltip: {
-            trigger: 'item'
-          }
+          xAxis: [{type: 'value', name: res.dataset.dimensions[0], axisLabel: {rotate: 50, interval: 0}}],
+          yAxis: [{type: 'value', name: res.dataset.dimensions[1]}],
+          
+          tooltip: {}
         };
       }).catch(err => {
         console.log(err);
@@ -89,13 +89,13 @@ export default {
     setTimer() {
       if(!this.timer){
         this.timer = setInterval(() => {
-          this.createPieData(this.url);
+          this.createData(this.url);
         }, this.interval);
       }
     }
   },
   mounted() {
-    this.createPieData(this.url);
+    this.createData(this.url);
   },
 }
 </script>
