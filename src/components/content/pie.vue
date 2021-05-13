@@ -1,7 +1,5 @@
 <template>
   <div>
-    <el-button @click="setTimer" id="but">自动刷新</el-button>
-    <el-button @click="clearTimer" id="but">停止刷新</el-button>
     <chart :widthpx="widthpx" :heightpx="heightpx" :options="options">
     </chart>
   </div>
@@ -27,7 +25,7 @@ export default {
   props: {
     interval: {
       type: Number,
-      default: 1000
+      default: 2000
     },
     url: '',
     widthpx: {
@@ -37,7 +35,8 @@ export default {
     heightpx: {
       type: Number,
       default: 0,
-    }
+    },
+    autoFresh: false
   },
 
   methods: {
@@ -92,10 +91,24 @@ export default {
           this.createPieData(this.url);
         }, this.interval);
       }
+    },
+
+    setAutoFresh(isAuto) {
+      if(isAuto){
+        this.setTimer();
+      }else{
+        this.clearTimer()
+      }
     }
   },
   mounted() {
     this.createPieData(this.url);
+    this.setAutoFresh(this.autoFresh);
   },
+  watch: {
+    autoFresh: function(newValue) {
+      this.setAutoFresh(newValue);
+    }
+  }
 }
 </script>

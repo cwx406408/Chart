@@ -16,7 +16,7 @@
       <el-container>
         <el-header style="text-align: right; font-size: 12px">
           <el-switch style="margin-right: 20px"
-            v-model="value"
+            v-model="autoFresh"
             active-text="自动刷新"
             inactive-text="停止刷新">
           </el-switch>
@@ -30,13 +30,13 @@
         </el-header>
         
         <el-main id="mainContent">
-          <barchart id="bar" v-if="chartType === 'bar'" :widthpx="width" :heightpx="height" url="/api/data/chart">
+          <barchart id="bar" v-if="chartType === 'bar'" :autoFresh="autoFresh" :widthpx="width" :heightpx="height" url="/api/data/chart">
           </barchart>
-          <linechart id="line" v-else-if="chartType === 'line'" :widthpx="width" :heightpx="height" url="/api/data/chart">
+          <linechart id="line" v-else-if="chartType === 'line'" :autoFresh="autoFresh" :widthpx="width" :heightpx="height" url="/api/data/chart">
           </linechart>
-          <piechart id="pie" v-else-if="chartType === 'pie'" :widthpx="width" :heightpx="height" url="/api/data/chart">
+          <piechart id="pie" v-else-if="chartType === 'pie'" :autoFresh="autoFresh" :widthpx="width" :heightpx="height" url="/api/data/chart">
           </piechart>
-          <scatter id="pie" v-else-if="chartType === 'scatter'" :widthpx="width" :heightpx="height" url="/api/dataset/chart">
+          <scatter id="pie" v-else-if="chartType === 'scatter'" :autoFresh="autoFresh" :widthpx="width" :heightpx="height" url="/api/dataset/chart">
           </scatter>
           <div id="setting" v-else-if="chartType === ''">这是设置页面</div>
          
@@ -87,7 +87,7 @@
         width: 0,
         height: 0,
         chartType: 'bar',
-        value: true
+        autoFresh: false
       }
     },
     mounted() {
